@@ -37,7 +37,7 @@
  */
 int menuState = 0;
 long timeout = 0;
-int ledValue[4] = {1023, 1023, 1023, 1023}; //colors itensity begns with max, generating "white" color
+int ledValue[4] = {255, 255, 255, 255}; //colors itensity begns with max, generating "white" color
 int potentiometerValue = 0;
 boolean isEditing = false;
 /* ==== END Global Variables ==== */
