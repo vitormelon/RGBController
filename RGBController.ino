@@ -10,13 +10,18 @@
 
 
 /* ==== Defines ==== */
-#define SERIAL_BAUD     115200
-#define LED_RED         2 //Red LED port
-#define LED_GREEN       3 //Green LED port
-#define LED_BLUE        4 //Blue LED port
-#define BUTTON          5 //Push-button port
-#define MENU_MAX        3 //MAX menu states ( + the 0 zero)
+
+#define LED_RED         2 //Red LED info port
+#define LED_GREEN       4 //Green LED info port
+#define LED_BLUE        7 //Blue LED info port
+#define BUTTON          8 //Push-button port
 #define POTENTIOMETER   A0//Potentiometer port
+#define OUT_RED         3 //Red LED info port
+#define OUT_GREEN       5 //Green LED info port
+#define OUT_BLUE        6 //Blue LED info port
+
+#define SERIAL_BAUD     115200
+#define MENU_MAX        3 //MAX menu states ( + the 0 zero)
 #define TIME_OUT        10*1000   //x * 1000 = convertion from miliseconds to seconds
 #define MAX_VARIATION   5 //max variation on the potentiometer read to start editing.
 #define RED             1 //array position of each color
