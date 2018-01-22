@@ -8,6 +8,7 @@
  * add to github
  */
 
+#include <EEPROM.h>
 
 /* ==== Defines ==== */
 
@@ -54,12 +55,14 @@ void setup() {
   buttonToLow();
   ledToLow(); 
   ledTest(); 
+  readFromEprom();
 }
 
 void loop() {
   checkButtonPress();
   checkPotentiometerChange();
   menu();
+  setOutLedValue();
 }
 /* ==== Functions ==== */
 void menu(){
@@ -98,7 +101,7 @@ void printStatusOnSerial(){
   Serial.print(readPotentiometer());
   
   Serial.print(" General: ");
-  Serial.print(ledValue[GENERAL]);
+  Serial.print(map(ledValue[GENERAL], 0, 255, 0, 100)/100.0);
   
   Serial.print(" Red: ");
   Serial.print(ledValue[RED]);
@@ -114,6 +117,7 @@ void printStatusOnSerial(){
 void checkButtonPress(){
   int menuStateBefore = menuState;
   if(digitalRead(BUTTON) == HIGH){
+    writeOnEprom();
     menuState ++;
     delay(250);
     ledToLow();
@@ -131,6 +135,13 @@ void checkPotentiometerChange(){
   }
 }
 
+void setOutLedValue(){
+  float general  = map(ledValue[GENERAL], 0, 255, 0, 100)/100.0;
+  analogWrite(OUT_RED,ledValue[RED] * general);
+  analogWrite(OUT_GREEN,ledValue[GREEN] * general);
+  analogWrite(OUT_BLUE,ledValue[BLUE] * general);
+}
+
 int getPotentiometerVariation(int valueNow){
   return abs(valueNow-potentiometerValue);
 }
@@ -138,6 +149,20 @@ int getPotentiometerVariation(int valueNow){
 void onMenuStateChange(){
   isEditing = false;
   potentiometerValue = readPotentiometer();
+}
+
+void readFromEprom(){
+  ledValue[RED] = EEPROM.read(RED);
+  ledValue[GREEN] = EEPROM.read(GREEN);
+  ledValue[BLUE] = EEPROM.read(BLUE);
+  ledValue[GENERAL] = EEPROM.read(GENERAL);  
+}
+
+void writeOnEprom(){
+  EEPROM.write(RED, ledValue[RED]);
+  EEPROM.write(GREEN, ledValue[GREEN]);
+  EEPROM.write(BLUE, ledValue[BLUE]);
+  EEPROM.write(GENERAL, ledValue[GENERAL]);
 }
 
 int readPotentiometer(){
